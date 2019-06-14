@@ -1,0 +1,10 @@
+programa teste inicio
+  real a;
+  real b;
+  a = 2.5;
+  b = 10.5;
+  real c;
+  c = a+b;
+  se ( c < 10 | c > 20)
+  	escreva(c);
+fim.
