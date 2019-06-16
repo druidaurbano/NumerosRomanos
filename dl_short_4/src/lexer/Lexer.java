@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
 
+//import parser.Parser;
+
 public class Lexer {
 	private static final char EOF_CHAR = (char)-1;
 	private static int line = 1;
@@ -47,6 +49,19 @@ public class Lexer {
 			e.printStackTrace();
 		}
 		return peek;
+	}
+	
+	//checa se pertence ao conjunto dos números romanos
+	private static boolean isRomano(char r) {
+		if( r == 'i' || r == 'I' || 
+			r == 'v' || r == 'V' || 
+			r == 'x' || r == 'X' || 
+			r == 'l' || r == 'L' || 
+			r == 'c' || r == 'C' || 
+			r == 'd' || r == 'D' || 
+			r == 'm' || r == 'M')
+				return true;
+		return false;
 	}
 
 	private static boolean isWhitespace(int c) {
@@ -111,6 +126,65 @@ public class Lexer {
 		default:
 			if (Character.isDigit(peek)) {
 				String num = "";
+				if( peek == '0') {
+					num += peek;
+					nextChar();
+					if( peek == 'r') {
+						num += peek;
+						nextChar();
+						if( isRomano(peek)){
+							switch(peek) {
+							case 'i' | 'I':
+								num += peek;
+								nextChar();
+								if(peek == 'i' || peek == 'I') {
+									num += peek;
+									nextChar();
+									if(peek == 'i' || peek == 'I' ) {	//número 3 -> III
+										num += peek;
+										nextChar();
+										if(!isWhitespace(peek)) {
+											num = "3";
+											return new Token(Tag.LIT_INT, num);
+										}
+										else {
+											num += peek;
+											error("Erro Léxico: " + num + " não é um literal romano válido");
+										}
+									}
+									else if(isWhitespace(peek)) {	//número 2 -> II
+										num = "2";
+										return new Token(Tag.LIT_INT_ROM, num);
+									}
+									else {
+										num += peek;
+										error("Erro Léxico: " + num + " não é um literal romano válido");
+									}
+								}
+								else if ( peek == 'v' || peek == 'V') {
+									num += peek;
+									nextChar();
+									if(isWhitespace(peek)) {
+										num = "4";
+										return new Token(Tag.LIT_INT_ROM, num);
+									}
+									else {
+										num += peek;
+										error("Erro Léxico: " + num + " não é um literal romano válido");
+									}
+								}
+								else if(isWhitespace(peek)) {
+									num = "1";
+									return new Token(Tag.LIT_INT_ROM, num);
+								}
+								else
+									error("Erro Léxico: " + num + " não é um literal romano válido");
+							}
+							//if(isRomano(peek))
+								//error("O caractere" + peek + "não é um número romano!");
+						}	//se pickar um romano entra no laço
+					}
+				}
 				do {
 					num += peek;
 					nextChar();
@@ -136,5 +210,12 @@ public class Lexer {
 		String unk = String.valueOf(peek);
 		nextChar();
 		return new Token(Tag.UNK, unk);
+	}
+
+	private void error(String s) {
+		System.err.println("linha " 
+				+ Lexer.line() 
+				+ ": " + s);
+		System.exit(0);
 	}
 }

@@ -17,7 +17,7 @@ public enum Tag {
 	SEMI("SEMI"), DOT("DOT"), LPAREN("LPAREN"), RPAREN("RPAREN"),
 	//Literals and Identifiers
 	LIT_INT("LIT_INT"), LIT_REAL("LIT_REAL"), ID("ID"),
-	TRUE("TRUE"), FALSE("FALSE"),
+	TRUE("TRUE"), FALSE("FALSE"), 
 	//Others
 	EOF("EOF"), UNK("UNK"), TEMP("TEMP");
 	

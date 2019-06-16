@@ -105,7 +105,7 @@ public class Parser {
 		case WRITE: return writeStmt();
 		case ID: return assign();
 		case IF: return ifStmt();
-		default: error("comando inv√°lido");
+		default: error("comando inv·lido");
 		}
 		return null;
 	}
