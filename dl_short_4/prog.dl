@@ -1,10 +1,16 @@
 programa teste inicio
   real a;
+  real z;
+  real v;
+  real y;
+  real w;
   real b;
-  a = 0riii;
+  a = 0rmccix;
+  v = 0rxxx;
+  z = 0rIx;
+  y = 0rviii;
+  w = 0riv;
   b = 20.5;
   real c;
-  c = a+b;
-  se ( c < 10 | c > 20)
-  	escreva(c);
+  	escreva(b);
 fim.

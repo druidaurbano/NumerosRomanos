@@ -16,7 +16,7 @@ public enum Tag {
 	//Symbols
 	SEMI("SEMI"), DOT("DOT"), LPAREN("LPAREN"), RPAREN("RPAREN"),
 	//Literals and Identifiers
-	LIT_INT("LIT_INT"), LIT_REAL("LIT_REAL"), ID("ID"),
+	LIT_INT("LIT_INT"), LIT_REAL("LIT_REAL"), LIT_INT_ROM("LIT_INT_ROM"), ID("ID"),
 	TRUE("TRUE"), FALSE("FALSE"), 
 	//Others
 	EOF("EOF"), UNK("UNK"), TEMP("TEMP");

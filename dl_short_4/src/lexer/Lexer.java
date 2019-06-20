@@ -126,64 +126,149 @@ public class Lexer {
 		default:
 			if (Character.isDigit(peek)) {
 				String num = "";
+				int somaromano = 0;
+				char peekanterior = ' ';
 				if( peek == '0') {
 					num += peek;
 					nextChar();
 					if( peek == 'r') {
 						num += peek;
 						nextChar();
-						if( isRomano(peek)){
+						do{
 							switch(peek) {
-							case 'i' | 'I':
-								num += peek;
-								nextChar();
-								if(peek == 'i' || peek == 'I') {
-									num += peek;
-									nextChar();
-									if(peek == 'i' || peek == 'I' ) {	//número 3 -> III
+							case 'I': case 'i':
+								int counti = 1;
+								peekanterior = peek;
+								while(peek == 'I' || peek == 'i') {
+									if(counti <= 3) {
 										num += peek;
+										somaromano += 1;
 										nextChar();
-										if(!isWhitespace(peek)) {
-											num = "3";
-											return new Token(Tag.LIT_INT, num);
+										counti++;
+									}
+									else {
+										num += peek;
+										error("Erro Léxico: " + num + " não é um literal romano válido");
+									}
+								}
+							break;
+							case 'V': case 'v':
+								num += peek;
+								if(peekanterior == 'I' || peekanterior == 'i') {
+									somaromano += 3;
+									nextChar();
+								}
+								else {
+									somaromano += 5;
+									nextChar();
+								}
+							break;
+							case 'X': case 'x':
+								if(peekanterior == 'I' || peekanterior == 'i') {
+									num += peek;
+									somaromano += 8;
+									nextChar();
+								}
+								else {
+									int countx = 1;
+									peekanterior = peek;
+									while(peek == 'X' || peek == 'x') {
+										if(countx <= 3) {
+											num += peek;
+											somaromano += 10;
+											nextChar();
+											countx++;
 										}
 										else {
 											num += peek;
 											error("Erro Léxico: " + num + " não é um literal romano válido");
 										}
 									}
-									else if(isWhitespace(peek)) {	//número 2 -> II
-										num = "2";
-										return new Token(Tag.LIT_INT_ROM, num);
-									}
-									else {
-										num += peek;
-										error("Erro Léxico: " + num + " não é um literal romano válido");
-									}
+								break;
 								}
-								else if ( peek == 'v' || peek == 'V') {
-									num += peek;
+							break;
+							case 'L': case 'l':
+								num += peek;
+								if(peekanterior == 'X' || peekanterior == 'x') {
+									somaromano += 30;
 									nextChar();
-									if(isWhitespace(peek)) {
-										num = "4";
-										return new Token(Tag.LIT_INT_ROM, num);
-									}
-									else {
-										num += peek;
-										error("Erro Léxico: " + num + " não é um literal romano válido");
-									}
 								}
-								else if(isWhitespace(peek)) {
-									num = "1";
-									return new Token(Tag.LIT_INT_ROM, num);
+								else {
+									somaromano += 50;
+									nextChar();
 								}
-								else
-									error("Erro Léxico: " + num + " não é um literal romano válido");
+							break;
+							case 'C': case 'c':
+								if(peekanterior == 'X' || peekanterior == 'x') {
+									num += peek;
+									somaromano += 80;
+									nextChar();
+								}
+								else {
+									int countx = 1;
+									peekanterior = peek;
+									while(peek == 'C' || peek == 'c') {
+										if(countx <= 3) {
+											num += peek;
+											somaromano += 100;
+											nextChar();
+											countx++;
+										}
+										else {
+											num += peek;
+											error("Erro Léxico: " + num + " não é um literal romano válido");
+										}
+									}
+								break;
+								}
+							break;
+							case 'D': case 'd':
+								num += peek;
+								if(peekanterior == 'C' || peekanterior == 'c') {
+									somaromano += 30;
+									nextChar();
+								}
+								else {
+									somaromano += 50;
+									nextChar();
+								}
+							break;
+							case 'M': case 'm':
+								if(peekanterior == 'C' || peekanterior == 'c') {
+									num += peek;
+									somaromano += 80;
+									nextChar();
+								}
+								else {
+									int countx = 1;
+									peekanterior = peek;
+									while(peek == 'M' || peek == 'm') {
+										if(countx <= 3) {
+											num += peek;
+											somaromano += 1000;
+											nextChar();
+											countx++;
+										}
+										else {
+											num += peek;
+											error("Erro Léxico: " + num + " não é um literal romano válido");
+										}
+									}
+								break;
+								}
+							break;
 							}
-							//if(isRomano(peek))
-								//error("O caractere" + peek + "não é um número romano!");
-						}	//se pickar um romano entra no laço
+						}while(isRomano(peek));	//se pickar um romano entra no laço
+						if(!Character.isAlphabetic(peek) || !Character.isDigit(peek))
+							num = Integer.toString(somaromano);
+						else {
+							num += peek;
+							error("Erro Léxico: " + num + " não é um literal romano válido");
+						}
+						return new Token(Tag.LIT_INT_ROM, num);
 					}
+					num += peek;
+					error("Erro Léxico: '" + num + "' não é um número romano!");
 				}
 				do {
 					num += peek;
@@ -218,4 +303,10 @@ public class Lexer {
 				+ ": " + s);
 		System.exit(0);
 	}
+	
 }
+
+
+
+
+

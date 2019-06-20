@@ -12,9 +12,9 @@ public class Assign extends Stmt {
 
 	public Assign(Id i, Expr e) {
 		if ( check(i.type(), e.type() ) == null )
-			error("valor de express√£o "
-					+ "incompat√≠vel com o "
-					+ "tipo da vari√°vel");
+			error("valor de express„o "
+					+ "incompatÌvel com o "
+					+ "tipo da vari·vel");
 		id = i;
 		expr = e;
 		addChild(id);

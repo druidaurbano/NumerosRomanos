@@ -201,6 +201,9 @@ public class Parser {
 		case LIT_REAL:
 			e = new Literal(move(), Tag.REAL);
 			break;
+		case LIT_INT_ROM:
+			e = new Literal(move(), Tag.LIT_INT_ROM);
+			break;
 		case TRUE: case FALSE:
 			e = new Literal(move(), Tag.BOOL);
 			break;
@@ -208,7 +211,7 @@ public class Parser {
 			e = findId( match(Tag.ID) );
 			break;
 		default:
-			error("express√£o inv√°lida");
+			error("express„o inv·lida");
 		}
 		return e;
 	}

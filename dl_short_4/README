@@ -14,7 +14,7 @@ EXPR				::= EXPR "|" REL | REL
 REL					::= REL < ARITH | REL <= ARITH | REL > ARITH | ARITH
 ARITH  				::= ARITH + TERM | ARITH - TERM | TERM
 TERM				::= TERM * FACTOR | FACTOR
-FACTOR				::= (EXPR) | ID | LIT_INT | LIT_REAL | LIT_BOOL
+FACTOR				::= (EXPR) | ID | LIT_INT | LIT_REAL | LIT_BOOL | LIT_INT_ROM
 
 Definições Regulares
 LETTER		::= a | b | ... | z | A | B | ... Z | _
