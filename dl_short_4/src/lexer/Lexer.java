@@ -290,45 +290,85 @@ public class Lexer {
 										break;
 								}
 							
-							case 'D': case 'd':
+							case 'D': case 'd':		//finalizado
 								num += peek;
 								if(peekanterior == 'C' || peekanterior == 'c') {
 									somaromano += 300;
 									nextChar();
 									if( peek == 'I' || peek == 'i' ||
 										peek == 'V' || peek == 'v' ||
-										peek == ' ')
+										peek == 'X' || peek == 'x' ||
+										peek == 'L' || peek == 'l')
 											break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;
 								}
 								else {
 									somaromano += 500;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v' ||
+										peek == 'X' || peek == 'x' ||
+										peek == 'L' || peek == 'l' ||
+										peek == 'C' || peek == 'c')
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;
 								}
-							break;
+							
 							case 'M': case 'm':
-								if(peekanterior == 'C' || peekanterior == 'c') {
+								if(peekanterior == 'C' || peekanterior == 'c') {	//900
 									num += peek;
-									somaromano += 80;
+									somaromano += 800;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v' ||
+										peek == 'X' || peek == 'x' ||
+										peek == 'L' || peek == 'l')
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;								
 								}
 								else {
-									int countx = 1;
+									int countm = 0;
 									peekanterior = peek;
 									while(peek == 'M' || peek == 'm') {
-										if(countx <= 3) {
+										if(countm < 3) {
+											countm++;
 											num += peek;
 											somaromano += 1000;
 											nextChar();
-											countx++;
 										}
 										else {
 											num += peek;
 											error("Erro Léxico: " + num + " não é um literal romano válido");
 										}
 									}
-								break;
+									if ((peek == 'I' || peek == 'i' ||
+										 peek == 'V' || peek == 'v' ||
+										 peek == 'X' || peek == 'x' ||
+										 peek == 'L' || peek == 'l' ||
+										 peek == 'C' || peek == 'c' ||
+										 peek == 'D' || peek == 'd' )
+										 ||
+										 ((peek == 'M' || peek == 'm') && countm < 2))
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;
 								}
-							break;
+							
 							default:
 								num += peek;
 								error("Erro Léxico: '" + num + "' não é um número romano!");

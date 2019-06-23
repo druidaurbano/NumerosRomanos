@@ -16,11 +16,11 @@ store double 0.0, double* %y
 store i32 0, i32* %w
 %b = alloca double
 store double 0.0, double* %b
-%1 = sitofp i32 300 to double
+%1 = sitofp i32 1000 to double
 store double %1, double* %a
-%2 = sitofp i32 217 to double
+%2 = sitofp i32 917 to double
 store double %2, double* %v
-%3 = sitofp i32 100 to double
+%3 = sitofp i32 3999 to double
 store double %3, double* %z
 %4 = sitofp i32 140 to double
 store double %4, double* %y
