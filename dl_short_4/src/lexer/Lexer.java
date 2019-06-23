@@ -50,19 +50,6 @@ public class Lexer {
 		}
 		return peek;
 	}
-	
-	//checa se pertence ao conjunto dos números romanos
-	private static boolean isRomano(char r) {
-		if( r == 'i' || r == 'I' || 
-			r == 'v' || r == 'V' || 
-			r == 'x' || r == 'X' || 
-			r == 'l' || r == 'L' || 
-			r == 'c' || r == 'C' || 
-			r == 'd' || r == 'D' || 
-			r == 'm' || r == 'M')
-				return true;
-		return false;
-	}
 
 	private static boolean isWhitespace(int c) {
 		switch (c) {
@@ -134,102 +121,187 @@ public class Lexer {
 					if( peek == 'r') {
 						num += peek;
 						nextChar();
-						do{
+						while(Character.isAlphabetic(peek)){
 							switch(peek) {
+							
 							case 'I': case 'i':
-								int counti = 1;
+								int counti = 0;
 								peekanterior = peek;
+								
 								while(peek == 'I' || peek == 'i') {
-									if(counti <= 3) {
+									if(counti < 3) {	//if serve apenas para verificar a quantidade máxima de I, ou seja 3
+										counti++;
 										num += peek;
 										somaromano += 1;
 										nextChar();
-										counti++;
 									}
 									else {
 										num += peek;
-										error("Erro Léxico: " + num + " não é um literal romano válido");
+										error("Erro Léxico: " + num + " não é um literal romano válido, são permitidos apenas três letras 'I' !");
 									}
 								}
+								
+								if((peek == 'V' || peek =='v' ||
+									peek == 'X' || peek == 'x') && counti < 2)	//if que verifica se o próximo caractere é válido
+									break;
+								else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+									num += peek;
+									error("Erro léxicoxl: " + num + " não é um número romano válido!");
+								} else
+									break;
 							break;
+							
 							case 'V': case 'v':
 								num += peek;
-								if(peekanterior == 'I' || peekanterior == 'i') {
+								if(peekanterior == 'I' || peekanterior == 'i') { 	//se for o número IV =4
 									somaromano += 3;
 									nextChar();
+									if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {		//se houver algo depois do v dá erro
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									}
+									else	//se não ele retorna tudo certinho
+										break;
 								}
-								else {
+								else {	//se for número 5 entra aqui
 									somaromano += 5;
 									nextChar();
+									if(peek == 'I' || peek == 'i')	//se o próximo for menor que 5 ele sai do laço switch
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {	//se houver algo maior que 5 = v ele dá erro
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else	// se for apenas o número 5 = v sai do laço
+										break;
 								}
-							break;
+							
 							case 'X': case 'x':
-								if(peekanterior == 'I' || peekanterior == 'i') {
+								if(peekanterior == 'I' || peekanterior == 'i') {	//verifica se é um número 9
 									num += peek;
 									somaromano += 8;
 									nextChar();
+									if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {		//se houver algum dígito ou letra depois do x dá erro
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									}
+									else	//se tiver tudo certinho dá break
+										break;
 								}
-								else {
-									int countx = 1;
+								else {		//se x não anteceder i entra aqui para formar valores múltiplos de 10
+									int countx = 0;
 									peekanterior = peek;
 									while(peek == 'X' || peek == 'x') {
-										if(countx <= 3) {
+										if(countx < 3) {
+											countx++;
 											num += peek;
 											somaromano += 10;
-											nextChar();
-											countx++;
+											nextChar();						
 										}
 										else {
 											num += peek;
-											error("Erro Léxico: " + num + " não é um literal romano válido");
+											error("Erro Léxicoxx: " + num + " não é um literal romano válido");
 										}
 									}
-								break;
+									if((peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v')
+										||
+										((peek == 'L' || peek == 'l' ||
+										 peek == 'C' || peek == 'c') && countx < 2))
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;
 								}
-							break;
-							case 'L': case 'l':
+								
+							case 'L': case 'l':	//finalizado
 								num += peek;
 								if(peekanterior == 'X' || peekanterior == 'x') {
 									somaromano += 30;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v')
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxicoxl: " + num + " não é um número romano válido!");
+									}
+									else
+										break;
 								}
 								else {
 									somaromano += 50;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v' ||
+										peek == 'X' || peek == 'x')
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxicoxl: " + num + " não é um número romano válido!");
+									}
+									else
+										break;
 								}
-							break;
-							case 'C': case 'c':
+							
+							case 'C': case 'c':	//finalizado
 								if(peekanterior == 'X' || peekanterior == 'x') {
 									num += peek;
 									somaromano += 80;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v')
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {		//se houver algum dígito ou letra depois do x dá erro
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									}
+									else	//se tiver tudo certinho dá break
+										break;
 								}
 								else {
-									int countx = 1;
+									int countc = 0;
 									peekanterior = peek;
 									while(peek == 'C' || peek == 'c') {
-										if(countx <= 3) {
+										if(countc < 3) {
+											countc++;
 											num += peek;
 											somaromano += 100;
 											nextChar();
-											countx++;
 										}
 										else {
 											num += peek;
 											error("Erro Léxico: " + num + " não é um literal romano válido");
 										}
 									}
-								break;
+									if ((peek == 'I' || peek == 'i' ||
+										 peek == 'V' || peek == 'v' ||
+										 peek == 'X' || peek == 'x' ||
+										 peek == 'L' || peek == 'l')
+										 ||
+										 ((peek == 'D' || peek == 'd' ||
+										   peek == 'M' || peek == 'm') && countc < 2))
+										break;
+									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
+										num += peek;
+										error("Erro léxico: " + num + " não é um número romano válido!");
+									} else
+										break;
 								}
-							break;
+							
 							case 'D': case 'd':
 								num += peek;
 								if(peekanterior == 'C' || peekanterior == 'c') {
-									somaromano += 30;
+									somaromano += 300;
 									nextChar();
+									if( peek == 'I' || peek == 'i' ||
+										peek == 'V' || peek == 'v' ||
+										peek == ' ')
+											break;
 								}
 								else {
-									somaromano += 50;
+									somaromano += 500;
 									nextChar();
 								}
 							break;
@@ -257,18 +329,21 @@ public class Lexer {
 								break;
 								}
 							break;
+							default:
+								num += peek;
+								error("Erro Léxico: '" + num + "' não é um número romano!");
+							break;
 							}
-						}while(isRomano(peek));	//se pickar um romano entra no laço
-						if(!Character.isAlphabetic(peek) || !Character.isDigit(peek))
-							num = Integer.toString(somaromano);
-						else {
+						}	//se pickar um romano entra no laço ----  Fim while(isRomano(peek))
+						if(Character.isDigit(peek)) {
 							num += peek;
-							error("Erro Léxico: " + num + " não é um literal romano válido");
+							error("Erro Léxico: " + num + " -> números romanos não podem ser concatenado com dígitos");
 						}
+						else
+							num = Integer.toString(somaromano);
 						return new Token(Tag.LIT_INT_ROM, num);
 					}
-					num += peek;
-					error("Erro Léxico: '" + num + "' não é um número romano!");
+					return new Token(Tag.LIT_INT, num);
 				}
 				do {
 					num += peek;
