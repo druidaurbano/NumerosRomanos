@@ -20,7 +20,7 @@ store double 0.0, double* %b
 store i32 %1, i32* %a
 %2 = add i32 2, 5
 store i32 %2, i32* %v
-store i32 3000, i32* %z
+store i32 4999, i32* %z
 store i32 140, i32* %y
 store i32 6, i32* %w
 %3 = fadd double 20.5, 2.0

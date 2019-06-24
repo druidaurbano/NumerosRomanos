@@ -146,7 +146,7 @@ public class Lexer {
 									break;
 								else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
 									num += peek;
-									error("Erro léxicoxl: " + num + " não é um número romano válido!");
+									error("Erro léxico: " + num + " não é um número romano válido!");
 								} else
 									break;
 							break;
@@ -199,7 +199,7 @@ public class Lexer {
 										}
 										else {
 											num += peek;
-											error("Erro Léxicoxx: " + num + " não é um literal romano válido");
+											error("Erro Léxico: " + num + " não é um literal romano válido");
 										}
 									}
 									if((peek == 'I' || peek == 'i' ||
@@ -225,7 +225,7 @@ public class Lexer {
 										break;
 									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
 										num += peek;
-										error("Erro léxicoxl: " + num + " não é um número romano válido!");
+										error("Erro léxico: " + num + " não é um número romano válido!");
 									}
 									else
 										break;
@@ -239,7 +239,7 @@ public class Lexer {
 										break;
 									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
 										num += peek;
-										error("Erro léxicoxl: " + num + " não é um número romano válido!");
+										error("Erro léxico: " + num + " não é um número romano válido!");
 									}
 									else
 										break;
@@ -272,7 +272,7 @@ public class Lexer {
 										}
 										else {
 											num += peek;
-											error("Erro Léxico: " + num + " não é um literal romano válido");
+											error("Erro léxico: " + num + " não é um literal romano válido");
 										}
 									}
 									if ((peek == 'I' || peek == 'i' ||
@@ -322,7 +322,7 @@ public class Lexer {
 										break;
 								}
 							
-							case 'M': case 'm':
+							case 'M': case 'm':		//finalizado
 								if(peekanterior == 'C' || peekanterior == 'c') {	//900
 									num += peek;
 									somaromano += 800;
@@ -342,7 +342,7 @@ public class Lexer {
 									int countm = 0;
 									peekanterior = peek;
 									while(peek == 'M' || peek == 'm') {
-										if(countm < 3) {
+										if(countm < 4) {
 											countm++;
 											num += peek;
 											somaromano += 1000;
@@ -350,7 +350,7 @@ public class Lexer {
 										}
 										else {
 											num += peek;
-											error("Erro Léxico: " + num + " não é um literal romano válido");
+											error("Erro léxico: " + num + " não é um literal romano válido");
 										}
 									}
 									if ((peek == 'I' || peek == 'i' ||
@@ -360,7 +360,7 @@ public class Lexer {
 										 peek == 'C' || peek == 'c' ||
 										 peek == 'D' || peek == 'd' )
 										 ||
-										 ((peek == 'M' || peek == 'm') && countm < 2))
+										 ((peek == 'M' || peek == 'm') && countm < 3))
 										break;
 									else if (Character.isAlphabetic(peek) || Character.isDigit(peek)) {
 										num += peek;
@@ -371,13 +371,13 @@ public class Lexer {
 							
 							default:
 								num += peek;
-								error("Erro Léxico: '" + num + "' não é um número romano!");
+								error("Erro léxico: '" + num + "' não é um número romano!");
 							break;
 							}
 						}	//se pickar um romano entra no laço ----  Fim while(isRomano(peek))
 						if(Character.isDigit(peek)) {
 							num += peek;
-							error("Erro Léxico: " + num + " -> números romanos não podem ser concatenado com dígitos");
+							error("Erro léxico: " + num + " -> números romanos não podem ser concatenado com dígitos");
 						}
 						else
 							num = Integer.toString(somaromano);
