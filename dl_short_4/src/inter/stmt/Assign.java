@@ -24,7 +24,7 @@ public class Assign extends Stmt {
 	private static Tag check(Tag t1, Tag t2) {
 		if (t1.isReal() && !t2.isBool())
 			return Tag.REAL;
-		else if (t1.isInt() && t2.isInt())
+		else if ((t1.isInt() || t1.isRomano()) && (t2.isInt() || t2.isRomano()))	//isRomano adicionado
 			return Tag.INT;
 		else if (t1.isBool() && t2.isBool())
 			return Tag.BOOL;

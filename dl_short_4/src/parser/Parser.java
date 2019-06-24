@@ -195,14 +195,11 @@ public class Parser {
 			e = expr();
 			match(Tag.RPAREN);
 			break;
-		case LIT_INT:
+		case LIT_INT: case LIT_INT_ROM:		//case LIT_INT_ROM adicionado
 			e = new Literal(move(), Tag.INT);
 			break;
 		case LIT_REAL:
 			e = new Literal(move(), Tag.REAL);
-			break;
-		case LIT_INT_ROM:
-			e = new Literal(move(), Tag.LIT_INT_ROM);
 			break;
 		case TRUE: case FALSE:
 			e = new Literal(move(), Tag.BOOL);

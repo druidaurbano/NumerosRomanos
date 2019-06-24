@@ -1,16 +1,16 @@
 programa teste inicio
-  real a;
-  real z;
-  real v;
-  real y;
+  inteiro a;
+  inteiro z;
+  inteiro v;
+  inteiro y;
   inteiro w;
   real b;
-  a = 0rm;
-  v = 0rcmxvii;
-  z = 0rmmmcmxcix;
+  a = 1+4;
+  v = 0rii+5;
+  z = 0rMmM;
   y = 0rcxl;
-  w = 6;
-  b = 20.5;
+  w = 0rVI;
+  b = 20.5+2.0;
   real c;
-  	escreva(b);
+  	escreva(v);
 fim.

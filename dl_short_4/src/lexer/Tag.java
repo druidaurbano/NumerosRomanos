@@ -43,9 +43,13 @@ public enum Tag {
 	public boolean isBool() {
 		return this == Tag.BOOL;
 	}
+	
+	public boolean isRomano() {	//bloco adicionado
+		return this == Tag.INT;
+	}
 
 	public boolean isNum() {
-		return (isInt() || isReal());
+		return (isInt() || isReal() || isRomano());	//isRomano() adicionado
 	}
 
 	public boolean isType() {

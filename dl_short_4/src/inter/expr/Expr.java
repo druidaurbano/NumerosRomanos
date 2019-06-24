@@ -34,7 +34,7 @@ public abstract class Expr extends Node {
 	public static Expr widen(Expr e, Tag type) {
 		if ( e.type == type || e.type().isReal() )
 			return e;
-		else if ( e.type().isInt() ) {
+		else if ( e.type().isInt() || e.type().isRomano()) {	//e.type().isRomano() adicionado
 			Temp t = new Temp(Tag.REAL);
 			code.emitConvert(t, e);
 			return t;

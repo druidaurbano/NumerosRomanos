@@ -11,6 +11,7 @@ public final class Emitter {
 	public static final Literal LIT_TRUE = new Literal(new Token(Tag.TRUE, "verdadeiro"), Tag.BOOL);
 	public static final Literal LIT_FALSE = new Literal( new Token(Tag.FALSE, "falso"), Tag.BOOL);
 	public static final Literal LIT_ZERO_INT = new Literal( new Token(Tag.LIT_INT, "0"), Tag.INT);
+	//public static final Literal LIT_ZERO_INT_ROM = new Literal( new Token(Tag.LIT_INT_ROM, "0"), Tag.INT);
 	public static final Literal LIT_ZERO_REAL = new Literal( new Token(Tag.LIT_REAL, "0.0"), Tag.REAL);
 	
 	private StringBuffer code;
